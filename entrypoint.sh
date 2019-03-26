@@ -51,7 +51,7 @@ if [ "$1" = 'run' ]; then
         # set ant environment
     	source ./setantenv.sh
     	# run hybris update with predefined config and without rebuilding
-    	gosu hybris ant initialize -Dde.hybris.platform.ant.production.skip.build=true 
+    	gosu hybris ant server initialize -Dde.hybris.platform.ant.production.skip.build=true
     fi
 
     # if update system is wanted we do it before starting the hybris server
@@ -59,9 +59,11 @@ if [ "$1" = 'run' ]; then
     	# set ant environment
     	source ./setantenv.sh
     	# run hybris update with predefined config
-    	gosu hybris ant updatesystem -DconfigFile=$HYBRIS_HOME/updateRunningSystem.config
+    	gosu hybris ant server updatesystem -DconfigFile=$HYBRIS_HOME/updateRunningSystem.config
     fi
 
+    source ./setantenv.sh
+    gosu hybris ant server
     # run hybris commerce suite as user hybris
     exec gosu hybris ./hybrisserver.sh $2
 
